@@ -18,6 +18,7 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nauticboy.top"),
   title: "Nautic Boy & Studio | Electronic Music Production",
   description: "Elevating electronic music from the booth to the final master. Producer, DJ and Mix & Mastering Engineer. Studio services, DJ sets and production templates.",
   keywords: ["mixing", "mastering", "DJ", "producer", "templates", "electronic music", "audio engineering", "nautic studio", "nautic boy", "music production", "ableton live", "techno"],
