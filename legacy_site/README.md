@@ -1,19 +1,19 @@
 <div align="center">
 
-<img src="https://nauticstudio.xyz/assets/images/nb-icon.ico" width="80" />
+<img src="https://nauticboy.top/assets/images/nb-icon.ico" width="80" />
 
 # NAUTIC BOY **&** STUDIO
 
 ### *Elevating electronic music from the booth to the final master*
 
-[![Website](https://img.shields.io/badge/🌐_Website-nauticstudio.xyz-FF6B00?style=for-the-badge&labelColor=0D0D0D)](https://nauticstudio.xyz)
+[![Website](https://img.shields.io/badge/🌐_Website-nauticboy.top-FF6B00?style=for-the-badge&labelColor=0D0D0D)](https://nauticboy.top)
 [![Spotify](https://img.shields.io/badge/🎵_Spotify-Nautic_Boy-1DB954?style=for-the-badge&labelColor=0D0D0D)](https://open.spotify.com/artist/6Oe1G3e3ajshDM507toD5H)
 [![Instagram](https://img.shields.io/badge/📸_Instagram-@nauticboy.music-E4405F?style=for-the-badge&labelColor=0D0D0D)](https://www.instagram.com/nauticboy.music)
 [![Telegram](https://img.shields.io/badge/✈️_Telegram-Community-26A5E4?style=for-the-badge&labelColor=0D0D0D)](https://t.me/+QJCKqq-wpR45MmJh)
 
 <br/>
 
-<img src="https://nauticstudio.xyz/assets/images/preview-link.jpg" width="720" style="border-radius:12px" />
+<img src="https://nauticboy.top/assets/images/preview-link.jpg" width="720" style="border-radius:12px" />
 
 </div>
 
@@ -51,7 +51,7 @@ Styling          Tailwind CSS (CDN)
 Audio            SoundCloud Widget API
 Typography       Outfit (Google Fonts)
 Hosting          GitHub Pages
-Domain           nauticstudio.xyz
+Domain           nauticboy.top
 ```
 
 <br/>
@@ -59,7 +59,7 @@ Domain           nauticstudio.xyz
 ## ✦ Project Structure
 
 ```
-nauticstudio.xyz/
+nauticboy.top/
 ├── index.html                  # Main entry point
 ├── success.html                # Form submission confirmation
 ├── robots.txt                  # SEO crawling rules
@@ -117,7 +117,7 @@ The releases section pulls cover art directly from Spotify's CDN. Each card feat
 
 ```bash
 # Clone the repository
-git clone https://github.com/nauticstudio/nauticstudio.xyz.git
+git clone https://github.com/nauticboy/nauticboy.top.git
 
 # Open in browser
 open index.html
@@ -132,7 +132,7 @@ npx serve .
 
 This site is deployed automatically via **GitHub Pages** on every push to `main`.
 
-- **Domain:** [nauticstudio.xyz](https://nauticstudio.xyz)
+- **Domain:** [nauticboy.top](https://nauticboy.top)
 - **SSL:** Enforced via GitHub Pages
 - **CDN:** GitHub's global edge network
 
@@ -151,6 +151,6 @@ This site is deployed automatically via **GitHub Pages** on every push to `main`
 <br/><br/>
 
 [![GitHub](https://img.shields.io/badge/GitHub-nauticstudio-181717?style=flat-square&logo=github)](https://github.com/nauticstudio)
-[![Website](https://img.shields.io/badge/Web-nauticstudio.xyz-FF6B00?style=flat-square)](https://nauticstudio.xyz)
+[![Website](https://img.shields.io/badge/Web-nauticboy.top-FF6B00?style=flat-square)](https://nauticboy.top)
 
 </div>

@@ -8,7 +8,7 @@
   **The official digital home of Nautic Studio.**
 
   <p align="center">
-    <a href="https://nauticstudio.xyz"><b>Website</b></a> •
+    <a href="https://nauticboy.top"><b>Website</b></a> •
     <a href="#-tech-stack"><b>Tech Stack</b></a> •
     <a href="#-getting-started"><b>Getting Started</b></a> •
     <a href="#-philosophy"><b>Philosophy</b></a>
@@ -26,7 +26,7 @@
 
 ## ✦ Overview
 
-The official frontend repository for **[nauticstudio.xyz](https://nauticstudio.xyz)**. 
+The official frontend repository for **[nauticboy.top](https://nauticboy.top)**. 
 
 This platform showcases our suite of native macOS applications, including our flagship product, **NauticPlayer**. Designed with minimalism, extreme performance, and a "premium-first" aesthetic, this website code reflects the core values of our desktop software.
 
@@ -55,10 +55,10 @@ Make sure you have Node.js (v18+) and your preferred package manager (`npm`, `ya
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/nauticstudio/nauticstudio.xyz.git
+git clone https://github.com/nauticboy/nauticboy.top.git
 
 # 2. Navigate into the directory
-cd nauticstudio.xyz
+cd nauticboy.top
 
 # 3. Install dependencies
 npm install
@@ -78,7 +78,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser. The applica
 ## ✦ Project Structure
 
 ```text
-nauticstudio.xyz/
+nauticboy.top/
 ├── app/               # Next.js App Router (Pages, Layouts, APIs)
 ├── public/            # Static assets (Images, Icons, Fonts)
 ├── src/

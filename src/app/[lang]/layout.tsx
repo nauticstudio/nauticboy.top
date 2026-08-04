@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Nautic Boy & Studio" }],
   openGraph: {
     type: "website",
-    url: "https://nauticstudio.xyz/",
+    url: "https://nauticboy.top/",
     title: "Nautic Boy & Studio",
     description: "Elevating electronic music from the booth to the final master. Producer, DJ and Mix & Mastering Engineer.",
     images: [{ url: "/images/studio.jpg" }],

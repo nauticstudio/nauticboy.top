@@ -59,7 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ dict }) => {
 
             <RevealWrapper direction="up" delay={0.6}>
               <div className="flex flex-wrap gap-4">
-                <GlowButton href="https://player.nauticstudio.xyz" className="gap-2">
+                <GlowButton href="https://player.nauticboy.top" className="gap-2">
                   <Download size={20} />
                   {dict.software_cta}
                 </GlowButton>
