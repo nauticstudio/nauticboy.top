@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionBadge } from '../ui/SectionBadge';
+import { SectionHeading } from '../ui/SectionHeading';
 import { RevealWrapper } from '../ui/RevealWrapper';
 import { templates } from '@/lib/data/templates';
 import { SCPlayerWrapper } from './SCPlayerWrapper';
@@ -14,17 +14,15 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({ dict }) => {
   return (
     <section id="templates" className="py-24 relative overflow-hidden">
       <Script src="https://w.soundcloud.com/player/api.js" strategy="afterInteractive" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-20">
-          <RevealWrapper direction="down">
-            <SectionBadge>{dict.templates_title}</SectionBadge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Ableton & Logic Templates</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              {dict.templates_desc}
-            </p>
-          </RevealWrapper>
-        </div>
+        <SectionHeading
+          index="03"
+          kicker={dict.templates_title}
+          title={dict.templates_heading}
+          subtitle={dict.templates_desc}
+          align="center"
+        />
 
         <RevealWrapper direction="up">
           <SCPlayerWrapper tracks={templates} ctaText={dict.template_cta} />

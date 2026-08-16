@@ -1,58 +1,70 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GlowButton } from '../ui/GlowButton';
 import { Send } from 'lucide-react';
+import type { Dictionary } from '@/lib/i18n/dictionaries';
 
 interface ContactFormProps {
-  dict: any;
+  dict: Dictionary;
 }
 
+const inputStyles =
+  'w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 transition-all focus:outline-none focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/25';
+
+const labelStyles =
+  'block font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-gray-500 mb-3';
+
 export const ContactForm: React.FC<ContactFormProps> = ({ dict }) => {
-  const [successUrl, setSuccessUrl] = useState('');
+  const nextInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Construct the success URL dynamically on the client
-    setSuccessUrl(new URL('./success', window.location.href).href);
+    // Set the success URL directly on the hidden input (external DOM sync)
+    if (nextInputRef.current) {
+      nextInputRef.current.value = new URL('./success', window.location.href).href;
+    }
   }, []);
 
   return (
-    <form 
-      action="https://formsubmit.co/53d80d68db36dcd2dd6a289cf9c0d041" 
+    <form
+      action="https://formsubmit.co/53d80d68db36dcd2dd6a289cf9c0d041"
       method="POST"
       className="grid md:grid-cols-2 gap-6"
     >
-      <input type="text" name="_honey" style={{ display: 'none' }} />
+      <input type="text" name="_honey" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
       <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value={successUrl} />
+      <input ref={nextInputRef} type="hidden" name="_next" defaultValue="" />
 
       <div className="space-y-6">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">{dict.form_name}</label>
-          <input 
-            type="text" 
-            name="name" 
-            required 
-            placeholder={dict.form_name_ph}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-accent transition-all placeholder:text-gray-600"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">{dict.form_email}</label>
-          <input 
-            type="email" 
-            name="email" 
-            required 
-            placeholder="your@email.com"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-accent transition-all placeholder:text-gray-600"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">{dict.form_service}</label>
-          <select 
-            name="subject" 
+          <label htmlFor="contact-name" className={labelStyles}>{dict.form_name}</label>
+          <input
+            id="contact-name"
+            type="text"
+            name="name"
             required
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-accent transition-all appearance-none cursor-pointer"
+            placeholder={dict.form_name_ph}
+            className={inputStyles}
+          />
+        </div>
+        <div>
+          <label htmlFor="contact-email" className={labelStyles}>{dict.form_email}</label>
+          <input
+            id="contact-email"
+            type="email"
+            name="email"
+            required
+            placeholder="your@email.com"
+            className={inputStyles}
+          />
+        </div>
+        <div>
+          <label htmlFor="contact-service" className={labelStyles}>{dict.form_service}</label>
+          <select
+            id="contact-service"
+            name="subject"
+            required
+            className={`${inputStyles} appearance-none cursor-pointer`}
           >
             <option value="Mixing" className="bg-neutral-900">Mixing</option>
             <option value="Mastering" className="bg-neutral-900">Mastering</option>
@@ -64,18 +76,19 @@ export const ContactForm: React.FC<ContactFormProps> = ({ dict }) => {
       </div>
 
       <div className="flex flex-col">
-        <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">{dict.form_message}</label>
-        <textarea 
-          name="message" 
-          required 
+        <label htmlFor="contact-message" className={labelStyles}>{dict.form_message}</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          required
           rows={8}
           placeholder={dict.form_message_ph}
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-brand-accent transition-all placeholder:text-gray-600 flex-grow resize-none"
+          className={`${inputStyles} flex-grow resize-none`}
         />
       </div>
 
       <div className="md:col-span-2 mt-4">
-        <GlowButton className="w-full gap-3 py-5 text-lg">
+        <GlowButton wrapperClassName="w-full" className="w-full gap-3 py-5 text-lg">
           <Send size={20} />
           {dict.form_submit}
         </GlowButton>

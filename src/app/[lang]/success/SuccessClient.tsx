@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import { GlowButton } from '@/components/ui/GlowButton';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import type { Dictionary } from '@/lib/i18n/dictionaries';
 
 interface SuccessClientProps {
-  dict: any;
+  dict: Dictionary;
   lang: string;
 }
 
@@ -52,12 +53,12 @@ export const SuccessClient: React.FC<SuccessClientProps> = ({ dict, lang }) => {
         </p>
         
         <div className="space-y-6">
-          <GlowButton href={`/${lang}`} className="w-full">
+          <GlowButton href={`/${lang}`} wrapperClassName="w-full" className="w-full">
             {dict.success_cta}
           </GlowButton>
           
           <p className="text-gray-500 text-sm">
-            {dict.success_redirect.replace('{seconds}', seconds)}
+            {dict.success_redirect.replace('{seconds}', String(seconds))}
           </p>
         </div>
       </div>

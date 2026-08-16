@@ -5,6 +5,7 @@ import { StudioSection } from '@/components/sections/StudioSection';
 import { ReleasesSection } from '@/components/sections/ReleasesSection';
 import { TemplatesSection } from '@/components/sections/TemplatesSection';
 import { PortfolioSection } from '@/components/sections/PortfolioSection';
+import { SoftwareSection } from '@/components/sections/SoftwareSection';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ReviewsSection } from '@/components/sections/ReviewsSection';
 import { ContactSection } from '@/components/sections/ContactSection';
@@ -19,7 +20,7 @@ export default async function Home({
   const dict = await getDictionary(lang as 'en' | 'es');
 
   return (
-    <main className="min-h-screen">
+    <main id="top" className="min-h-screen">
       <Navbar dict={dict} lang={lang} />
       <HeroSection dict={dict} />
       
@@ -31,6 +32,7 @@ export default async function Home({
       <ReleasesSection dict={dict} />
       <TemplatesSection dict={dict} />
       <PortfolioSection dict={dict} />
+      <SoftwareSection dict={dict} />
       <AboutSection dict={dict} />
       <ReviewsSection dict={dict} />
       <ContactSection dict={dict} />
