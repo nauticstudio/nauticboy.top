@@ -25,7 +25,7 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({ dict }) => {
         />
 
         <RevealWrapper direction="up">
-          <SCPlayerWrapper tracks={templates} ctaText={dict.template_cta} />
+          <SCPlayerWrapper tracks={templates} ctaText={dict.template_cta} blockedNotice={dict.template_autoplay_notice} />
         </RevealWrapper>
       </div>
     </section>

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Play, Pause, ExternalLink } from 'lucide-react';
+import { Play, Pause, ExternalLink, VolumeX } from 'lucide-react';
 import { WaveformProgress } from '../ui/WaveformProgress';
 
 interface SCWidget {
@@ -12,69 +12,176 @@ interface SCWidget {
   bind(event: string, callback: (data: unknown) => void): void;
   getDuration(callback: (duration: number) => void): void;
   seekTo(ms: number): void;
+  isPaused(callback: (paused: boolean) => void): void;
 }
 
 interface SCStatic {
   Widget: {
     (iframe: HTMLIFrameElement): SCWidget;
-    Events: { PLAY_PROGRESS: string; FINISH: string };
+    Events: {
+      READY: string;
+      PLAY: string;
+      PAUSE: string;
+      PLAY_PROGRESS: string;
+      FINISH: string;
+      ERROR: string;
+    };
   };
 }
 
 interface SCPlayerWrapperProps {
   tracks: { id: number; scId: string; title: string; src: string; buyLink: string }[];
   ctaText: string;
+  blockedNotice: string;
 }
 
-export const SCPlayerWrapper: React.FC<SCPlayerWrapperProps> = ({ tracks, ctaText }) => {
+export const SCPlayerWrapper: React.FC<SCPlayerWrapperProps> = ({ tracks, ctaText, blockedNotice }) => {
   const [playingId, setPlayingId] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   const [widget, setWidget] = useState<SCWidget | null>(null);
+  // El navegador bloqueó el arranque programático: mostrar el reproductor real
+  // para que el usuario lo arranque con un gesto dentro del iframe.
+  const [blocked, setBlocked] = useState(false);
+  // Pista solicitada cuyo PLAY aún no llegó; el READY tras load() la arranca
+  // si el navegador ignoró auto_play.
+  const pendingIdRef = useRef<number | null>(null);
+  // scId cargado actualmente en el widget (arranca con el src del iframe).
+  const loadedScIdRef = useRef<string>(tracks[0]?.scId ?? '');
+  // Espejo de widget sin estado para usarlo dentro de timers y handlers.
+  const widgetRef = useRef<SCWidget | null>(null);
+  // Detecta el autoplay bloqueado: si tras el intento sigue pausado, hay fallback.
+  const watchdogRef = useRef<number | null>(null);
 
   const currentTrack = tracks.find(t => t.id === playingId);
 
+  const clearWatchdog = () => {
+    if (watchdogRef.current !== null) {
+      window.clearTimeout(watchdogRef.current);
+      watchdogRef.current = null;
+    }
+  };
+
+  // Si tras el intento de arranque el widget sigue pausado, el navegador bloqueó
+  // el autoplay (Safari/iOS ignoran el gesto delegado por postMessage): desplegar
+  // el reproductor real para que el primer play sea un tap directo en el iframe.
+  const armWatchdog = (ms: number) => {
+    clearWatchdog();
+    const w = widgetRef.current;
+    if (!w) return;
+    watchdogRef.current = window.setTimeout(() => {
+      if (pendingIdRef.current === null) return;
+      w.isPaused((paused: boolean) => {
+        if (paused && pendingIdRef.current !== null) setBlocked(true);
+      });
+    }, ms);
+  };
+
   useEffect(() => {
-    // SC is loaded via Script component in the parent
+    let disposed = false;
+    let created: SCWidget | null = null;
+
     const initWidget = () => {
       const SC = (window as unknown as { SC?: SCStatic }).SC;
-      if (SC) {
-        const iframeElement = document.querySelector('#sc-widget') as HTMLIFrameElement;
-        if (iframeElement) {
-          const scWidget = SC.Widget(iframeElement);
-          setWidget(scWidget);
+      const iframeElement = document.querySelector('#sc-widget') as HTMLIFrameElement | null;
+      if (!SC || !iframeElement) return false;
 
-          // Bind events
-          scWidget.bind(SC.Widget.Events.PLAY_PROGRESS, (data) => {
-            setProgress((data as { relativePosition: number }).relativePosition);
-          });
+      const scWidget = SC.Widget(iframeElement);
 
-          scWidget.bind(SC.Widget.Events.FINISH, () => {
-            setPlayingId(null);
-            setProgress(0);
-          });
+      scWidget.bind(SC.Widget.Events.READY, () => {
+        if (disposed) return;
+        // load() emite un READY nuevo: reintentar la reproducción por si
+        // auto_play fue bloqueado por la política de autoplay.
+        if (pendingIdRef.current !== null) {
+          scWidget.play();
+          armWatchdog(2600);
         }
-      }
+      });
+      scWidget.bind(SC.Widget.Events.PLAY, () => {
+        if (disposed) return;
+        clearWatchdog();
+        setBlocked(false);
+        const id = pendingIdRef.current;
+        pendingIdRef.current = null;
+        if (id !== null) {
+          setPlayingId(id);
+        } else {
+          // El usuario arrancó la pista desde el propio widget de SoundCloud.
+          const t = tracks.find(x => x.scId === loadedScIdRef.current);
+          if (t) setPlayingId(t.id);
+        }
+      });
+      scWidget.bind(SC.Widget.Events.PAUSE, () => {
+        if (disposed) return;
+        // Durante un cambio de pista llega un PAUSE del track anterior;
+        // solo sincronizar la UI cuando no hay carga pendiente.
+        if (pendingIdRef.current === null) setPlayingId(null);
+      });
+      scWidget.bind(SC.Widget.Events.PLAY_PROGRESS, (data) => {
+        if (disposed) return;
+        setProgress((data as { relativePosition: number }).relativePosition);
+      });
+      scWidget.bind(SC.Widget.Events.FINISH, () => {
+        if (disposed) return;
+        clearWatchdog();
+        pendingIdRef.current = null;
+        setPlayingId(null);
+        setProgress(0);
+      });
+      scWidget.bind(SC.Widget.Events.ERROR, () => {
+        if (disposed) return;
+        clearWatchdog();
+        pendingIdRef.current = null;
+        setPlayingId(null);
+        setProgress(0);
+      });
+
+      created = scWidget;
+      widgetRef.current = scWidget;
+      setWidget(scWidget);
+      return true;
     };
 
-    const timer = setTimeout(initWidget, 1000);
-    return () => clearTimeout(timer);
+    // api.js se inyecta tras la hidratación (Script afterInteractive) y puede
+    // tardar más de un segundo en redes lentas: sondear hasta que exista en
+    // vez de apostar por un timeout fijo que dejaba el player muerto para siempre.
+    const poll = setInterval(() => {
+      if (disposed || initWidget()) clearInterval(poll);
+    }, 150);
+    const stop = setTimeout(() => clearInterval(poll), 30000);
+
+    return () => {
+      disposed = true;
+      clearInterval(poll);
+      clearTimeout(stop);
+      clearWatchdog();
+      created?.pause();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const togglePlay = (id: number, scId: string) => {
     if (!widget) return;
 
     if (playingId === id) {
+      pendingIdRef.current = null;
+      clearWatchdog();
+      setBlocked(false);
       widget.pause();
       setPlayingId(null);
-    } else {
-      setProgress(0);
-      widget.load(`https://api.soundcloud.com/tracks/${scId}`, {
-        auto_play: true,
-        show_artwork: false,
-        visual: false
-      });
-      setPlayingId(id);
+      return;
     }
+
+    setProgress(0);
+    pendingIdRef.current = id;
+    loadedScIdRef.current = scId;
+    setBlocked(false);
+    widget.load(`https://api.soundcloud.com/tracks/${scId}`, {
+      auto_play: true,
+      show_artwork: false,
+      visual: false
+    });
+    armWatchdog(3500);
+    setPlayingId(id);
   };
 
   const handleSeek = (percent: number) => {
@@ -84,7 +191,10 @@ export const SCPlayerWrapper: React.FC<SCPlayerWrapperProps> = ({ tracks, ctaTex
     });
   };
 
-  const handleClose = () => {
+  const stopAll = () => {
+    pendingIdRef.current = null;
+    clearWatchdog();
+    setBlocked(false);
     if (widget) widget.pause();
     setPlayingId(null);
     setProgress(0);
@@ -145,27 +255,55 @@ export const SCPlayerWrapper: React.FC<SCPlayerWrapperProps> = ({ tracks, ctaTex
         })}
       </div>
 
-      {/* Waveform Progress Bar */}
-      <WaveformProgress
-        progress={progress}
-        isPlaying={playingId !== null}
-        trackTitle={currentTrack?.title || ''}
-        onClose={handleClose}
-        onSeek={handleSeek}
-      />
+      {/* Waveform Progress Bar (sustituida por el player real mientras el autoplay está bloqueado) */}
+      {!blocked && (
+        <WaveformProgress
+          progress={progress}
+          isPlaying={playingId !== null}
+          trackTitle={currentTrack?.title || ''}
+          onClose={stopAll}
+          onSeek={handleSeek}
+        />
+      )}
 
-      {/* Hidden Player */}
-      <iframe
-        id="sc-widget"
-        title="SoundCloud player"
-        width="100%"
-        height="166"
-        scrolling="no"
-        frameBorder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1"
-        style={{ display: 'none' }}
-      />
+      {/* Widget de SoundCloud. En el flujo normal vive en 1×1 invisible (mejor
+          tolerado que display:none en móviles). Si el navegador bloquea el
+          autoplay se expande visible con el aviso: el play que pulsa el usuario
+          dentro del iframe es un gesto real y desbloquea el audio en Safari/iOS;
+          a partir de ese PLAY los controles custom vuelven a mandar. Debe
+          permanecer siempre montado para no recrear el widget. */}
+      <div
+        role={blocked ? 'region' : undefined}
+        aria-label={blocked ? blockedNotice : undefined}
+        className={`fixed ${
+          blocked
+            ? 'bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl gradient-border bg-black/85 backdrop-blur-2xl rounded-2xl p-3 shadow-2xl'
+            : 'bottom-0 left-0 z-0 w-px h-px overflow-hidden opacity-[0.02] pointer-events-none'
+        }`}
+      >
+        {blocked && (
+          <p className="flex items-center gap-2 px-2 pb-2 text-xs text-white/80">
+            <VolumeX size={14} className="text-brand-accent shrink-0" aria-hidden="true" />
+            {blockedNotice}
+          </p>
+        )}
+        <iframe
+          id="sc-widget"
+          title="SoundCloud player"
+          scrolling="no"
+          allow="autoplay"
+          frameBorder="no"
+          src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(
+            `https://api.soundcloud.com/tracks/${tracks[0]?.scId ?? ''}`
+          )}`}
+          style={{
+            display: 'block',
+            border: 0,
+            width: blocked ? '100%' : '1px',
+            height: blocked ? '166px' : '1px'
+          }}
+        />
+      </div>
     </>
   );
 };
