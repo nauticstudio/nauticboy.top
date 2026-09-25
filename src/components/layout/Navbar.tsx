@@ -14,6 +14,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ dict, lang }) => {
   const navLinks = [
+    { name: dict.nav_nauticmixxx, href: '#nauticmixxx', id: 'nauticmixxx' },
     { name: dict.nav_studio, href: '#services', id: 'services' },
     { name: dict.nav_releases, href: '#dj', id: 'dj' },
     { name: dict.nav_templates, href: '#templates', id: 'templates' },

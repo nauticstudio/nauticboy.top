@@ -6,6 +6,7 @@ import { ReleasesSection } from '@/components/sections/ReleasesSection';
 import { TemplatesSection } from '@/components/sections/TemplatesSection';
 import { PortfolioSection } from '@/components/sections/PortfolioSection';
 import { SoftwareSection } from '@/components/sections/SoftwareSection';
+import { NauticMixxxLaunch } from '@/components/sections/NauticMixxxLaunch';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { ReviewsSection } from '@/components/sections/ReviewsSection';
 import { ContactSection } from '@/components/sections/ContactSection';
@@ -23,6 +24,7 @@ export default async function Home({
     <main id="top" className="min-h-screen">
       <Navbar dict={dict} lang={lang} />
       <HeroSection dict={dict} />
+      <NauticMixxxLaunch dict={dict} />
       
       <div className="relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-linear-to-r from-transparent via-brand-accent/20 to-transparent" />
