@@ -59,15 +59,15 @@ export const NauticMixxxLaunch: React.FC<NauticMixxxLaunchProps> = ({ dict }) =>
               <i className="h-2 w-2 rounded-full bg-[#ddb553]" />
               <i className="h-2 w-2 rounded-full bg-[#65ad70]" />
             </div>
-            <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-white/35">NauticMixxx · Preview</span>
+            <span className="font-mono text-[8px] uppercase tracking-[0.12em] text-white/35">Rekordbox USB · Read Only</span>
             <span className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-[0.12em] text-white/35"><i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />{dict.mixxx_preview}</span>
           </div>
 
           <div className="grid min-h-[410px] md:grid-cols-[1.25fr_0.75fr]">
             <div className="relative border-b border-white/5 p-6 md:border-b-0 md:border-r md:p-9">
               <div className="mb-7 flex items-center justify-between">
-                <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">Session overview</span>
-                <span className="flex items-center gap-2 font-mono text-[9px] text-white/35"><AudioWaveform size={13} />44.1 kHz · 24 bit</span>
+                <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30">USB source · 186 tracks</span>
+                <span className="flex items-center gap-2 font-mono text-[9px] text-white/35"><AudioWaveform size={13} />export.pdb · ANLZ</span>
               </div>
               <div className="relative flex h-32 items-center justify-around gap-1 overflow-hidden rounded-xl border border-white/5 bg-black/20 px-3">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-size-[28px_28px]" />
