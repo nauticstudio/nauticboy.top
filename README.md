@@ -62,8 +62,24 @@ Technology should serve the art, not the other way around — the design keeps a
 
 The page follows Studio → Work → Reviews → Music → Templates → Software → About → Contact. `src/lib/navigation.ts` supplies the navbar, mobile menu and footer links in that order. Software groups NauticMixxx and NauticPlayer; their direct anchors are `#nauticmixxx` and `#nauticplayer`.
 
-NauticMixxx content is verified against the [1.5.0 release](https://github.com/nauticsoftware/NauticMixxx/releases/tag/v1.5.0). `src/lib/nauticmixxx.ts` centralizes its version and URLs. The icon and Home/PERFORMANCE captures in `public/images/nauticmixxx-*` are the official assets copied from the product website, sourced from the [product repository](https://github.com/nauticsoftware/NauticMixxx/blob/56267f5f838a555f97e734bc3b5223d7eaa6fe70/README.md). Both screenshots use lossless WebP and retain their original proportions.
+NauticMixxx versions and release links are retrieved automatically from the [latest public release](https://github.com/nauticsoftware/NauticMixxx/releases/latest). `src/lib/nauticmixxx.ts` reads the generated release snapshot. The icon and Home/PERFORMANCE captures in `public/images/nauticmixxx-*` are the official assets copied from the product website, sourced from the [product repository](https://github.com/nauticsoftware/NauticMixxx/blob/56267f5f838a555f97e734bc3b5223d7eaa6fe70/README.md). Both screenshots use lossless WebP and retain their original proportions.
 
 ## SEO
 
-The root is an accessible language selection page with HTML links. Each locale has its own canonical, reciprocal hreflang, Open Graph metadata and structured data. `scripts/finalize-export.mjs` stamps the correct HTML language into the static exports, including Spanish before JavaScript loads. Contact success pages are noindex and excluded from the sitemap. Keep `public/sitemap.xml` and the bilingual product copy current when publishing a new release.
+The root is an accessible language selection page with HTML links. Each locale has its own canonical, reciprocal hreflang, Open Graph metadata and structured data. `scripts/finalize-export.mjs` stamps the correct HTML language into the static exports, including Spanish before JavaScript loads. Contact success pages are noindex and excluded from the sitemap. Versions and release links update automatically. Review the bilingual product descriptions when product capabilities change.
+
+## Automatic NauticMixxx releases
+
+Both websites use GitHub's public `releases/latest` API for `nauticsoftware/NauticMixxx`, which selects the latest published release and excludes drafts and prereleases. Publish a normal GitHub Release to update the websites; changing a Git tag or the README alone does not publish a release.
+
+- `npm run build` / `npm run dev` first run `scripts/prepare-release.mjs`. This retrieves the release and its uploaded assets into `src/lib/release/snapshot.json`. Versions, release URLs, installer names, source and checksums come from that response; no manual version edits are required.
+- The generated static HTML includes this version before JavaScript loads. `public/release-snapshot.json` is generated for inspection and is not committed.
+- After hydration, `useNauticRelease` checks GitHub from the browser, with a five-minute cache, shared requests, and refreshes while the page is visible or regains focus. Version labels, download links and `SoftwareApplication` structured data update together.
+- Missing installers point to the release page with “View downloads”; missing checksums are omitted. Only uploaded assets from the official repository are accepted. No asset filename is invented.
+- A browser API failure keeps the most recent validated response or the compiled snapshot. During local builds, an API failure uses the checked-in snapshot. CI instead stops the deployment, preserving the live site if GitHub is unavailable.
+- GitHub Actions also rebuilds and publishes hourly, so static HTML and SEO catch up without a website commit. Scheduled runs are subject to GitHub queue delays and default-branch schedule policies; browser updates continue independently.
+- `GITHUB_TOKEN` is used only in Node during CI, never shipped to the browser. The browser uses the public endpoint; API rate limits or offline access can delay refreshes.
+
+Run `npm run test:release` to verify a future release with renamed assets, missing installers, rate limits, caching, storage failures and synchronized structured data. The release integration under `src/lib/release/` is intentionally identical in both independent website repositories; keep it synchronized when changing the mechanism.
+
+Release notes use the official release title and link. Product feature descriptions and screenshots remain editorial content and should be reviewed if the product changes its capabilities.

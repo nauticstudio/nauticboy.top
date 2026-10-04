@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { NAUTICMIXXX_VERSION, NAUTICMIXXX_SITE, NAUTICMIXXX_REPO, NAUTICMIXXX_RELEASE, nauticMixxxPage } from './nauticmixxx';
+import { NAUTICMIXXX_CURRENT_RELEASE, NAUTICMIXXX_VERSION, NAUTICMIXXX_SITE, NAUTICMIXXX_REPO, NAUTICMIXXX_RELEASE, nauticMixxxPage } from './nauticmixxx';
 
 export const SITE_URL = 'https://nauticboy.top';
 export const getSiteMetadata = (lang: string): Metadata => {
@@ -32,7 +32,9 @@ export const getSiteSchema = (lang: string) => ({
       url: nauticMixxxPage(lang), sameAs: NAUTICMIXXX_REPO,
       applicationCategory: 'MultimediaApplication', operatingSystem: 'macOS Apple Silicon, Windows x64', softwareVersion: NAUTICMIXXX_VERSION,
       image: `${SITE_URL}/images/nauticmixxx-icon.png`, releaseNotes: NAUTICMIXXX_RELEASE,
-      license: `${NAUTICMIXXX_REPO}/blob/v${NAUTICMIXXX_VERSION}/LICENSE.md`,
+      license: NAUTICMIXXX_CURRENT_RELEASE.license,
+      softwareHelp: NAUTICMIXXX_CURRENT_RELEASE.installationGuide,
+      downloadUrl: [NAUTICMIXXX_CURRENT_RELEASE.mac?.url, NAUTICMIXXX_CURRENT_RELEASE.windows?.url].filter(Boolean),
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', url: NAUTICMIXXX_RELEASE },
     },
   ],

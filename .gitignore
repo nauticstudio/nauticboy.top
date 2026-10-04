@@ -42,3 +42,6 @@ next-env.d.ts
 
 # zcode session artifacts
 .zcode/
+
+# Generated from GitHub before builds
+/public/release-snapshot.json

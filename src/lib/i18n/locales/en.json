@@ -103,7 +103,7 @@
   "mixxx_performance_alt": "NauticMixxx PERFORMANCE view with two decks, RGB waveforms and Hot Cues",
   "mixxx_home_alt": "NauticMixxx startup screen with its logo and both decks in standby",
   "mixxx_home_caption": "Startup · Official README screenshot",
-  "mixxx_downloads_link": "v1.5.0 installers",
+  "mixxx_downloads_link": "v{version} installers",
   "mixxx_source_link": "Source on GitHub",
   "software_kicker": "Tools we build",
   "player_eyebrow": "Native player · macOS"

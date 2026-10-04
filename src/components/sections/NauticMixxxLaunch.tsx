@@ -1,10 +1,14 @@
+'use client';
+
 import Image from 'next/image';
+import { useNauticRelease } from '@/lib/release/useNauticRelease';
 import { ArrowUpRight, Check, CodeXml } from 'lucide-react';
 import type { Dictionary } from '@/lib/i18n/dictionaries';
-import { NAUTICMIXXX_VERSION, NAUTICMIXXX_REPO, NAUTICMIXXX_RELEASE, nauticMixxxPage } from '@/lib/nauticmixxx';
+import { NAUTICMIXXX_REPO, nauticMixxxPage } from '@/lib/nauticmixxx';
 import { GlowButton } from '../ui/GlowButton';
 
 export function NauticMixxxLaunch({ dict, lang }: { dict: Dictionary; lang: string }) {
+  const release = useNauticRelease();
   const chips = [dict.mixxx_chip_1, dict.mixxx_chip_2, dict.mixxx_chip_3];
 
   return (
@@ -13,7 +17,7 @@ export function NauticMixxxLaunch({ dict, lang }: { dict: Dictionary; lang: stri
         <div className="flex items-center gap-4">
           <Image src="/images/nauticmixxx-icon.png" alt="" width={56} height={56} className="shrink-0" />
           <div>
-            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-brand-accent">{dict.mixxx_eyebrow} · v{NAUTICMIXXX_VERSION}</p>
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-brand-accent">{dict.mixxx_eyebrow} · {release.tag}</p>
             <h3 id="mixxx-heading" className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">NauticMixxx</h3>
           </div>
         </div>
@@ -45,7 +49,7 @@ export function NauticMixxxLaunch({ dict, lang }: { dict: Dictionary; lang: stri
       <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 px-6 py-4 md:px-8">
         <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-gray-400">{dict.mixxx_preview}</span>
         <div className="flex flex-wrap gap-5 text-xs">
-          <a href={NAUTICMIXXX_RELEASE} className="text-brand-accent hover:text-white transition-colors">{dict.mixxx_downloads_link} ↗</a>
+          <a href={release.page} className="text-brand-accent hover:text-white transition-colors">{dict.mixxx_downloads_link.replace('{version}', release.version)} ↗</a>
           <a href={NAUTICMIXXX_REPO} className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors"><CodeXml size={14} aria-hidden="true" />{dict.mixxx_source_link}</a>
         </div>
       </div>

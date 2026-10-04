@@ -4,6 +4,9 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  schedule:
+    # Refresh static HTML and SEO even without a website commit.
+    - cron: "38 * * * *"
 
 permissions:
   contents: read
@@ -44,8 +47,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Test release synchronization
+        run: npm run test:release
+
       - name: Build with Next.js
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

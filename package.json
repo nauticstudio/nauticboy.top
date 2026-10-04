@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/finalize-export.mjs",
+    "build": "next build && node scripts/finalize-export.mjs && node scripts/verify-release-export.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prebuild": "node scripts/prepare-release.mjs",
+    "predev": "node scripts/prepare-release.mjs",
+    "test:release": "node --test scripts/release.test.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
