@@ -8,9 +8,11 @@ import { GlowButton } from '../ui/GlowButton';
 interface MobileMenuProps {
   links: { name: string; href: string; id: string }[];
   contactText: string;
+  openLabel: string;
+  closeLabel: string;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ links, contactText }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({ links, contactText, openLabel, closeLabel }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -28,8 +30,8 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ links, contactText }) =>
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        className="lg:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors relative z-50"
+        aria-label={isOpen ? closeLabel : openLabel}
+        className="xl:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors relative z-50"
       >
         {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
       </button>
@@ -41,9 +43,9 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ links, contactText }) =>
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="absolute inset-x-4 top-20 z-40 lg:hidden"
+            className="absolute inset-x-4 top-20 z-40 xl:hidden"
           >
-            <div className="gradient-border bg-brand-dark/95 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+            <div className="gradient-border bg-brand-dark/95 backdrop-blur-2xl rounded-2xl p-6 shadow-2xl max-h-[calc(100dvh-120px)] overflow-y-auto flex flex-col gap-4">
               {links.map((link) => (
                 <a
                   key={link.name}

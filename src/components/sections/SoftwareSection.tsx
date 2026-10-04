@@ -8,10 +8,12 @@ import { GlowButton } from '../ui/GlowButton';
 import { SectionHeading } from '../ui/SectionHeading';
 import { RevealWrapper } from '../ui/RevealWrapper';
 import { TiltCard } from '../ui/TiltCard';
+import { NauticMixxxLaunch } from './NauticMixxxLaunch';
 import { Dictionary } from '@/lib/i18n/dictionaries';
 
 interface SoftwareSectionProps {
   dict: Dictionary;
+  lang: string;
 }
 
 const container: Variants = {
@@ -29,7 +31,7 @@ const item: Variants = {
   },
 };
 
-export const SoftwareSection: React.FC<SoftwareSectionProps> = ({ dict }) => {
+export const SoftwareSection: React.FC<SoftwareSectionProps> = ({ dict, lang }) => {
   const features = [
     { text: dict.software_feature1, Icon: Cpu },
     { text: dict.software_feature2, Icon: Zap },
@@ -45,16 +47,22 @@ export const SoftwareSection: React.FC<SoftwareSectionProps> = ({ dict }) => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="05"
-          kicker={dict.software_title}
-          title="NauticPlayer"
+          index="06"
+          kicker={dict.software_kicker}
+          title={dict.software_title}
           subtitle={dict.software_desc}
         />
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <NauticMixxxLaunch dict={dict} lang={lang} />
+
+        <article id="nauticplayer" aria-labelledby="player-heading" className="mt-12 grid lg:grid-cols-2 gap-12 items-center rounded-3xl border border-white/10 bg-white/[0.02] p-6 md:p-10">
+          <div className="lg:col-span-2 flex items-center gap-4">
+            <Image src="/images/np_64x64.png" width={56} height={56} alt="" />
+            <div><p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-brand-accent">{dict.player_eyebrow}</p><h3 id="player-heading" className="font-display text-2xl font-semibold sm:text-3xl">NauticPlayer</h3></div>
+          </div>
           {/* Copy */}
           <motion.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }}>
-            <motion.h3
+            <motion.h4
               variants={item}
               className="text-3xl md:text-4xl font-light text-white leading-snug mb-10"
               dangerouslySetInnerHTML={{ __html: dict.software_tagline }}
@@ -83,8 +91,8 @@ export const SoftwareSection: React.FC<SoftwareSectionProps> = ({ dict }) => {
             </motion.div>
           </motion.div>
 
-          {/* 3D mockup */}
-          <RevealWrapper direction="left" delay={0.15} className="hidden lg:block">
+          {/* Application screenshot */}
+          <RevealWrapper direction="left" delay={0.15} className="block">
             <TiltCard innerClassName="rounded-3xl" maxRotate={14}>
               <div
                 aria-hidden="true"
@@ -97,7 +105,6 @@ export const SoftwareSection: React.FC<SoftwareSectionProps> = ({ dict }) => {
                   alt="NauticPlayer Interface"
                   width={600}
                   height={400}
-                  priority
                   className="relative z-10 w-full h-auto"
                 />
               </div>
@@ -120,7 +127,7 @@ export const SoftwareSection: React.FC<SoftwareSectionProps> = ({ dict }) => {
               </div>
             </TiltCard>
           </RevealWrapper>
-        </div>
+        </article>
       </div>
     </section>
   );

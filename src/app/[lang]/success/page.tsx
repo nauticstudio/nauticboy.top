@@ -1,6 +1,16 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { SuccessClient } from './SuccessClient';
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  return {
+    title: lang === 'es' ? 'Mensaje enviado | Nautic Boy & Studio' : 'Message sent | Nautic Boy & Studio',
+    robots: { index: false, follow: true },
+    alternates: { canonical: `/${lang}/success`, languages: {} },
+  };
+}
 
 export default async function SuccessPage({
   params,

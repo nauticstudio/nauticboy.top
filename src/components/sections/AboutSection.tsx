@@ -52,7 +52,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ dict }) => {
           {/* Text Column */}
           <div>
             <SectionHeading
-              index="06"
+              index="07"
               kicker={dict.nav_about}
               title={dict.about_title}
               accentWords={[2, 3]}

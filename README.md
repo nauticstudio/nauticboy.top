@@ -19,7 +19,7 @@
 
 ## ✦ Overview
 
-One-page bilingual (EN/ES) marketing site for **Nautic Boy & Studio**: mixing/mastering services, official releases, production templates, selected works and the NauticPlayer macOS app.
+One-page bilingual (EN/ES) marketing site for **Nautic Boy & Studio**: mixing/mastering services, official releases, production templates, selected works, NauticMixxx DJ software and the NauticPlayer macOS app.
 
 Statically exported (`output: 'export'`) and deployed to GitHub Pages via `.github/workflows/nextjs-deploy.yml`.
 
@@ -35,7 +35,7 @@ Statically exported (`output: 'export'`) and deployed to GitHub Pages via `.gith
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000 → redirects to /en or /es
+npm run dev     # http://localhost:3000 → language selection, /en or /es
 npm run build   # static export to out/
 npm run lint
 ```
@@ -57,3 +57,13 @@ Contact and newsletter forms are handled by FormSubmit. Audio previews via Sound
 ## ✦ Philosophy
 
 Technology should serve the art, not the other way around — the design keeps a dark studio-room aesthetic: intentional orange accent light, engineering-grade mono labels, film grain, and motion that serves the sound metaphor.
+
+## Navigation and product content
+
+The page follows Studio → Work → Reviews → Music → Templates → Software → About → Contact. `src/lib/navigation.ts` supplies the navbar, mobile menu and footer links in that order. Software groups NauticMixxx and NauticPlayer; their direct anchors are `#nauticmixxx` and `#nauticplayer`.
+
+NauticMixxx content is verified against the [1.5.0 release](https://github.com/nauticsoftware/NauticMixxx/releases/tag/v1.5.0). `src/lib/nauticmixxx.ts` centralizes its version and URLs. The icon and Home/PERFORMANCE captures in `public/images/nauticmixxx-*` are the official assets copied from the product website, sourced from the [product repository](https://github.com/nauticsoftware/NauticMixxx/blob/56267f5f838a555f97e734bc3b5223d7eaa6fe70/README.md). Both screenshots use lossless WebP and retain their original proportions.
+
+## SEO
+
+The root is an accessible language selection page with HTML links. Each locale has its own canonical, reciprocal hreflang, Open Graph metadata and structured data. `scripts/finalize-export.mjs` stamps the correct HTML language into the static exports, including Spanish before JavaScript loads. Contact success pages are noindex and excluded from the sitemap. Keep `public/sitemap.xml` and the bilingual product copy current when publishing a new release.

@@ -17,7 +17,7 @@ export const TemplatesSection: React.FC<TemplatesSectionProps> = ({ dict }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="03"
+          index="05"
           kicker={dict.templates_title}
           title={dict.templates_heading}
           subtitle={dict.templates_desc}

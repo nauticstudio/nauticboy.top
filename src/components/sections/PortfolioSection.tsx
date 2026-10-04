@@ -13,7 +13,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ dict }) => {
     <section id="work" className="py-24 relative overflow-hidden bg-white/[0.02]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="04"
+          index="02"
           kicker={dict.work_title}
           title={dict.work_subtitle}
           align="center"

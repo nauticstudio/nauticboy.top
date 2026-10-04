@@ -256,3 +256,6 @@
     scroll-behavior: auto;
   }
 }
+
+/* Keep section headings visible below the fixed navigation. */
+[id] { scroll-margin-top: 7rem; }

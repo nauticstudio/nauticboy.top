@@ -28,7 +28,7 @@ export const NavLinks: React.FC<NavLinksProps> = ({ links }) => {
   }, [links]);
 
   return (
-    <div className="hidden lg:flex items-center justify-center gap-7">
+    <div className="hidden xl:flex items-center justify-center gap-5">
       {links.map((link) => {
         const isActive = active === link.id;
         return (
@@ -36,7 +36,7 @@ export const NavLinks: React.FC<NavLinksProps> = ({ links }) => {
             key={link.name}
             href={link.href}
             aria-current={isActive ? 'true' : undefined}
-            className={`relative text-sm font-medium transition-colors ${
+            className={`relative whitespace-nowrap text-[13px] font-medium transition-colors ${
               isActive ? 'text-white' : 'text-gray-300 hover:text-white'
             }`}
           >

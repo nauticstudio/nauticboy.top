@@ -13,7 +13,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ dict }) => {
     <section id="reviews" className="py-24 relative overflow-hidden bg-white/[0.02]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          index="07"
+          index="03"
           kicker={dict.reviews_kicker}
           title={dict.reviews_title}
           subtitle={dict.reviews_desc}

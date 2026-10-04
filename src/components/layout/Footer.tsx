@@ -1,3 +1,4 @@
+import { getNavigation } from '@/lib/navigation';
 import React from 'react';
 import { InstagramIcon } from '../ui/Icons';
 import { Send, ArrowUp } from 'lucide-react';
@@ -50,8 +51,7 @@ export const Footer: React.FC<FooterProps> = ({ dict }) => {
               {[
                 { name: dict.mixing_title, href: '#services' },
                 { name: dict.mastering_title, href: '#services' },
-                { name: 'DJ / Live Acts', href: '#dj' },
-                { name: dict.nav_software, href: '#software' },
+                { name: 'DJ / Live Acts', href: '#contact' },
               ].map((item) => (
                 <li key={item.name}>
                   <a href={item.href} className="text-gray-500 hover:text-white transition-colors text-sm">
@@ -60,19 +60,18 @@ export const Footer: React.FC<FooterProps> = ({ dict }) => {
                 </li>
               ))}
             </ul>
+            <h4 className="mt-8 mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-white/50">{dict.nav_software}</h4>
+            <ul className="space-y-4">
+              <li><a href="#nauticmixxx" className="text-gray-500 hover:text-white transition-colors text-sm">NauticMixxx</a></li>
+              <li><a href="#nauticplayer" className="text-gray-500 hover:text-white transition-colors text-sm">NauticPlayer</a></li>
+            </ul>
           </div>
 
           {/* Navigation */}
           <div>
             <h4 className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/50 mb-8">{dict.footer_nav}</h4>
             <ul className="space-y-4">
-              {[
-                { name: dict.nav_studio, href: '#services' },
-                { name: dict.nav_releases, href: '#dj' },
-                { name: dict.nav_templates, href: '#templates' },
-                { name: dict.nav_portfolio, href: '#work' },
-                { name: dict.nav_about, href: '#about' },
-              ].map((item) => (
+              {getNavigation(dict).map((item) => (
                 <li key={item.name}>
                   <a href={item.href} className="text-gray-500 hover:text-white transition-colors text-sm">
                     {item.name}
@@ -95,10 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ dict }) => {
             © {new Date().getFullYear()} NAUTIC BOY &amp; STUDIO — {dict.footer_rights}
           </p>
 
-          <div className="flex gap-8">
-            <a href="#" className="text-gray-600 hover:text-white text-xs transition-colors">{dict.footer_privacy}</a>
-            <a href="#" className="text-gray-600 hover:text-white text-xs transition-colors">{dict.footer_terms}</a>
-          </div>
+
 
           <a
             href="#top"
