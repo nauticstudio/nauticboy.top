@@ -83,3 +83,5 @@ Both websites use GitHub's public `releases/latest` API for `nauticsoftware/Naut
 Run `npm run test:release` to verify a future release with renamed assets, missing installers, rate limits, caching, storage failures and synchronized structured data. The release integration under `src/lib/release/` is intentionally identical in both independent website repositories; keep it synchronized when changing the mechanism.
 
 Release notes use the official release title and link. Product feature descriptions and screenshots remain editorial content and should be reviewed if the product changes its capabilities.
+
+Production builds use `next build --webpack` to avoid the Turbopack Google Fonts resolver error observed on the Linux Pages runner. The exported pages and release verification remain the same.
