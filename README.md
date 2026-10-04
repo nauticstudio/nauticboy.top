@@ -21,7 +21,7 @@
 
 One-page bilingual (EN/ES) marketing site for **Nautic Boy & Studio**: mixing/mastering services, official releases, production templates, selected works, NauticMixxx DJ software and the NauticPlayer macOS app.
 
-Statically exported (`output: 'export'`) and deployed to GitHub Pages via `.github/workflows/nextjs-deploy.yml`.
+Statically exported (`output: 'export'`) and deployed to GitHub Pages via `.github/workflows/nextjs-deploy.yml`. In Settings → Pages, Source must be **GitHub Actions** (`build_type: workflow`). Publishing the source branch directly renders the README instead of the compiled site and can overwrite the Next.js deployment.
 
 ## ✦ Tech Stack
 
