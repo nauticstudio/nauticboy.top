@@ -54,7 +54,10 @@ test('missing installer or checksum uses release navigation without inventing fi
 test('ZIP/MSI formats reflect the actual published files when DMG/EXE are absent', () => {
   const next = futureRelease();
   next.assets = next.assets.filter((asset) => !asset.name.endsWith('.dmg') && !asset.name.endsWith('.exe'));
-  next.assets.push({ name: 'NauticMixxx-9.8.7-win-amd64.msi', state: 'uploaded', browser_download_url: `${RELEASE_REPO}/releases/download/v9.8.7/NauticMixxx-9.8.7-win-amd64.msi` });
+  next.assets.push(
+    { name: 'NauticMixxx-9.8.7-macos-arm64.zip', state: 'uploaded', browser_download_url: `${RELEASE_REPO}/releases/download/v9.8.7/NauticMixxx-9.8.7-macos-arm64.zip` },
+    { name: 'NauticMixxx-9.8.7-win-amd64.msi', state: 'uploaded', browser_download_url: `${RELEASE_REPO}/releases/download/v9.8.7/NauticMixxx-9.8.7-win-amd64.msi` }
+  );
   assert.equal(normalizeRelease(next).mac.format, 'ZIP');
   assert.equal(normalizeRelease(next).windows.format, 'MSI');
 });
