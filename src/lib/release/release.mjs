@@ -57,10 +57,10 @@ export function releaseSnapshot(raw, checkedAt = new Date().toISOString()) {
   };
 }
 
-export async function fetchLatestRelease(fetcher = globalThis.fetch, headers = {}) {
+export async function fetchLatestRelease(fetcher = globalThis.fetch, headers = {}, { timeoutMs = 8000 } = {}) {
   const response = await fetcher(RELEASE_API, {
     headers: { Accept: 'application/vnd.github+json', ...headers },
-    cache: 'no-store', signal: AbortSignal.timeout(8000),
+    cache: 'no-store', signal: AbortSignal.timeout(timeoutMs),
   });
   if (!response.ok) throw new Error(`GitHub release request failed (${response.status})`);
   return releaseSnapshot(await response.json());

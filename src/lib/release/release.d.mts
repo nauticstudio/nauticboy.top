@@ -16,7 +16,7 @@ export const RELEASE_CACHE_KEY: string;
 export const RELEASE_TTL: number;
 export function normalizeRelease(raw: unknown): NauticRelease;
 export function releaseSnapshot(raw: unknown, checkedAt?: string): ReleaseSnapshot;
-export function fetchLatestRelease(fetcher?: typeof fetch, headers?: Record<string, string>): Promise<ReleaseSnapshot>;
+export function fetchLatestRelease(fetcher?: typeof fetch, headers?: Record<string, string>, options?: { timeoutMs?: number }): Promise<ReleaseSnapshot>;
 export function createReleaseClient(fallback: ReleaseSnapshot, options?: {
   fetcher?: typeof fetch; storage?: Pick<Storage, 'getItem' | 'setItem'>; now?: () => number;
 }): { current(): NauticRelease; refresh(): Promise<NauticRelease> };

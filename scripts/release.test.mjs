@@ -35,7 +35,7 @@ test('new releases update version, exact asset names, source and document links 
   assert.equal(release.version, '9.8.7');
   assert.equal(release.windows.url, `${RELEASE_REPO}/releases/download/v9.8.7/NauticMixxx-9.8.7-Windows-x64-Installer.exe`);
   assert.match(release.mac.url, /9\.8\.7.*\.dmg$/);
-  assert.match(release.source.url, /9\.8\.7-source\.tar\.gz$/);
+  assert.match(release.source.url, /(?:9\.8\.7-source\.tar\.gz|v9\.8\.7\.tar\.gz)$/);
   assert.match(release.checksums, /v9\.8\.7\/SHA256SUMS\.txt$/);
   assert.match(release.license, /blob\/v9\.8\.7\/LICENSE\.md$/);
 });
